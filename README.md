@@ -16,12 +16,13 @@ Repository dedicato allo sviluppo di software per il WP3400 del progetto "ASI-IS
 ### strumenti di progetto
 * per pianificare e monitorare lo sviluppo del codice: https://github.com/SNPA-AQ/aq-data-fusion/projects/1?fullscreen=true
 * per segnalare problemi (_issues_), porre obiettivi intermedi (_milestones_), proporre soluzioni: https://github.com/SNPA-AQ/aq-data-fusion/issues
+* per discutere l'impostazione del lavoro (tra sviluppatori): https://github.com/orgs/SNPA-AQ/teams/data-fusion-developers
   
 ### link utili
 * [guida](https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf) essenziale di _git_
 * [guida](https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf) essenziale di _RStudio_
 
-## struttura
+## struttura del repository
 
 | __cartella__ o _file_ | descrizione | note |
 |-----------------------|-------------|------|
