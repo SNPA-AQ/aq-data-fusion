@@ -28,6 +28,7 @@ Repository dedicato allo sviluppo di software per il WP3400 del progetto "ASI-IS
 |-----------------------|-------------|------|
 | _.gitignore_| lista di file/cartelle da non caricare su github | p.es. dati voluminosi o riservati |
 | _README.md_ | README  | formato RMarkdown |
+| _LICENSE_ | definisce la licenza | [GPLv3](https://www.gnu.org/licenses/quick-guide-gplv3.it.html) |
 | __config__ | file di configurazione| p.es. definizione dei path|
 | __data__ | dati e metadati| conviene strutturarli in sotto-cartelle |
 | __bash__   |script di shell|  |
