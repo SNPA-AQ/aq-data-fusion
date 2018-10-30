@@ -38,3 +38,6 @@ rsconnect/
 
 # HTML files
 *.html
+
+# Rproject file
+*.Rproj
