@@ -18,5 +18,18 @@ Repository dedicato allo sviluppo di software per il WP3400 del progetto "ASI-IS
 * per segnalare problemi (_issues_), porre obiettivi intermedi (_milestones_), proporre soluzioni: https://github.com/SNPA-AQ/aq-data-fusion/issues
   
 ### link utili
-* [guida](https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf) con i comandi essenziali di _git_
-* [guida](https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf) con i comandi essenziali di _RStudio_
+* [guida](https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf) essenziale di _git_
+* [guida](https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf) essenziale di _RStudio_
+
+## struttura
+
+| __cartella__ o _file_ | descrizione | note |
+|-----------------------|-------------|------|
+| _.gitignore_| lista di file/cartelle da non caricare su github | p.es. dati voluminosi o riservati |
+| _README.md_ | README  | formato RMarkdown |
+| __config__ | file di configurazione| p.es. definizione dei path|
+| __data__ | dati e metadati| conviene strutturarli in sotto-cartelle |
+| __bash__   |script di shell|  |
+| __python__ |script python  |  |
+| __R__      |script R       |  |
+| __log__ | log |  |
