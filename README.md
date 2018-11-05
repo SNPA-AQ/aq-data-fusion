@@ -21,6 +21,7 @@ Repository dedicato allo sviluppo di software per il WP3400 del progetto "ASI-IS
 ### link utili
 * [guida](https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf) essenziale di _git_
 * [guida](https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf) essenziale di _RStudio_
+* un breve [video](https://youtu.be/YxZ8J2rqhEM) su RStudio e GitHub
 
 ## struttura del repository
 

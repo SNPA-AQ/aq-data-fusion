@@ -1,0 +1,5 @@
+# file da modificare in base alla propria architettura
+
+CALICANTUS_DATA_DIR=/home/giovanni/R/projects/calicantus/data/
+GEOGRAPHIC_DATA_DIR=/home/giovanni/data/
+R_SCRIPTS_DIR=/home/giovanni/R/projects/SNPA-aq-data-fusion/R/
