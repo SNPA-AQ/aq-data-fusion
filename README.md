@@ -1,7 +1,7 @@
 # aq-data-fusion
 _Data fusion for air quality data_
 
-Repository dedicato allo sviluppo di software per il WP3400 del progetto "ASI-ISPRA Qualità dell'Aria".
+Repository dedicato allo sviluppo di software per la combinazione di dati da modello e osservati
 
 ## come contribuire al progetto
 
