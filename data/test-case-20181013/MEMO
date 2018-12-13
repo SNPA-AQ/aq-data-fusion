@@ -1,0 +1,36 @@
+==========================
+   TEST CASE 2018-10-13
+   Descrizione dei DATI
+==========================
+
+out.2018101300_2018101400_PM10_ITA7.nc
+# dati dal modello CHimere sul  dominio ITA7
+
+asi-ispra-20181013_PM10_24h.csv
+# dati da stazioni, provenienti da ISPRA per le stazioni che misurano il dato sulle 24 ore.
+
+asi-ispra-20181013_PM10_1h_mean.csv
+# dati da stazioni, provenienti da ISPRA per le stazioni che misurano il dato orario, elaborato per fare la media sulle 24 ore
+
+asi-ispra-20181013_PM10_giornalieri.csv
+# l'unione dei due file 24h e 1h_mean
+
+
+I dati sono ottenuti tramite elaborazione ad hoc del file xml originale di ISPRA.
+
+Si sono riscontrati i seguenti punti critici:
+
+- alcune stazioni riportano più valori di PM10 sulle 24h, a fronte degli stessi altri metadati, compresi lo stato di verifica e validazione. In quel caso è stato preso il primo valore in elenco.
+Nel file black-list_PM10_24h.csv sono riportati tutti i valori relativi a queste stazioni
+
+- alcune stazioni orarie riportano meno del 75% di dati validi e sono state escluse
+
+- alcune stazioni orarie riportano dati duplicati per la stessa ora e sono state escluse
+
+
+Elenco delle Regioni/Province per le quali sono presenti dati:
+
+Basilicata, Calabria, Emilia-Romagna, Friuli Venezia-Giulia, Lazio, Lombardia, Marche, Molise, Provincia Autonoma Trento,
+Puglia, Toscana, Umbria, Valle d'Aosta, Veneto
+
+
