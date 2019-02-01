@@ -4,7 +4,19 @@
 ==========================
 
 out.2018101300_2018101400_PM10_ITA7.nc
-# dati dal modello CHimere sul  dominio ITA7
+# dati dal modello Chimere sul  dominio ITA7
+
+asi-ispra-20181013_giornalieri.csv : dati provenineti da ISPRA, estratti da ARPAE. Sono presenti sia le misure a 24h, sia l'elaborazione delle misure orarie.
+
+asi-ispra-20181013_24h_PIEMONTE_*.csv: dati integrati dal Piemonte perchè assenti nel dataset 
+
+arpac_pm10_20181013.csv: dati integrati da arpa Campania perché assente 
+AQ_FVG_201811-20181015.csv: dati integrati da ARPA FVG perché incompleti
+
+
+
+####################################################
+# Nella cartella dati_parziali ci sono le elaborazioni di arpae per ottenere i dati giornalieri. Questi dati possono essere utile per verificare eventuali errori di archiviazione o elaborazione nell'intero flusso.
 
 asi-ispra-20181013_PM10_24h.csv
 # dati da stazioni, provenienti da ISPRA per le stazioni che misurano il dato sulle 24 ore.
