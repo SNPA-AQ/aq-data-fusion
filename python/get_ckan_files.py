@@ -2,112 +2,102 @@
 # encoding: utf-8
 
 #############################################
-# Autore: ARPAC - A.D'Ambrosio
-# Data: 09.01.2019
+# Autori:   A.D'Ambrosio (ARPAC)
+#           G.Bonafe' (ARPA-FVG)
 # Utilizzo: Download files da CKAN ARPAE
-# Progetto: ASI-ISPRA
+# Progetto: ASI-ISPRA-QA
 # Versione Python: 2
+# Versioni script: 
+#  data        autore  descrizione
+#  2019-01-09  ADAm    prima versione
+#  2019-03-29  GBon    credenziali esterne
+#  2019-04-01  GBon    wget evita interruzioni
 ############################################
 
 import urllib2
 import json
 import base64
 import os
+import argparse
+import logging
+import sys
 
-# legge credenziali da ckan.json
-# NB va predisposto nella cartella di lavoro, 
-# sulla base del TEMPLATE
-with open('ckan.json', 'r') as json_file:  
-    ckan_config = json.load(json_file)
+# configura logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
+
+# argomenti
+parser = argparse.ArgumentParser(description='Download from CKAN')
+parser.add_argument('simulation', help='simulation', choices=['meteo', 'qa'])
+parser.add_argument('domain', help='domain', choices=['centrosud', 'nord'])
+parser.add_argument('type', help='type', choices=['latest', 'older'])
+parser.add_argument('--locdir', default='./',          nargs=1, help='local download directory (default:./)')
+parser.add_argument('--json',   default='./ckan.json', nargs=1, help='JSON with host, username, password (default:./ckan.json)')
+args = parser.parse_args()
+
+# legge credenziali dal JSON
+# NB va predisposto sulla base del TEMPLATE
+json_file = open(args.json, 'r')
+ckan_config = json.load(json_file)
     
 username = json.dumps(ckan_config["username"]).strip('"')
 password = json.dumps(ckan_config["password"]).strip('"')
+host =     json.dumps(ckan_config["host"]).strip('"')
+address = 'https://' + host
+package =   args.simulation + '-' + args.domain
+if args.type == 'older':
+  package = package + '-storico'
+local_dir = args.locdir
 
-def get_ckan_files(package, directory, username=username, password=password):
+#Preparazione richiesta del package desiderato
+request = urllib2.Request(address + '/api/3/action/package_show?id='+package)
+base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
+request.add_header("Authorization", "Basic %s" % base64string)
 
-    # Package può assumere uno dei seguenti valori:
-    # 'meteo-centrosud'
-    # 'meteo-centrosud-storico'
-    # 'meteo-nord'
-    # 'meteo-nord-storico'
-    # 'qa-centrosud'
-    # 'qa-centrosud-storico'
-    # 'qa-nord'
-    # 'qa-nord-storico'
+try:
+    response = urllib2.urlopen(request)
+except Exception, e:
+    logging.error(e.message)
+    sys.exit(1)
 
+assert response.code == 200
+data=response.read()
 
-    #Preparazione richiesta del package desiderato
-    request = urllib2.Request('https://asi-ispra-qa.arpae.it/api/3/action/package_show?id='+package)
+response_dict = json.loads(data)        # Creazione dizionario dal json
+assert response_dict['success'] is True # Controllo che il messaggio sia valido
+result=response_dict['result']          # Accesso alle risorse
+num_resources = result['num_resources'] # Numero di risorse
+resources=result['resources']           # Nome e url dei files
+
+# Download files
+for i in range(0,num_resources):
+    remote_file=resources[i]
+
+    # Preparazione richiesta del singolo file per il download
+    file_name = remote_file['name']
+    request = urllib2.Request(remote_file['url'])
     base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
     request.add_header("Authorization", "Basic %s" % base64string)
-
     try:
-        response = urllib2.urlopen(request)
+        r = urllib2.urlopen(request)
     except Exception, e:
-        print(e.message)
-        exit(1)
+        logging.error(e.message)
+        sys.exit(2)
 
-    assert response.code == 200
-    data=response.read()
+    # Download del file
+    local_file = os.path.join(local_dir, file_name)
+    try:
+        wget_opts = ' --progress=bar --tries=0 --continue --server-response --timeout=0 --retry-connrefused'
+        wget_orig = ' "https://' + username + ":" + password + "@" + remote_file['url'].replace('https://', '') + '"'
+        wget_dest = ' --output-document=' + local_file
+        os.system('wget ' + wget_opts + wget_orig + wget_dest)
+        is_downloaded = True
+    except Exception, e:
+        is_downloaded = False
+        logging.warning(e.message)
 
-    # Creazione dizionario dal json
-    response_dict = json.loads(data)
+    if (is_downloaded):
+        logging.info('Download del file '+ file_name + ' terminato.')
+    else:
+        logging.warning('Download del file ' + file_name + ' fallito.')
 
-    # Controllo che il messaggio sia valido
-    assert response_dict['success'] is True
-
-    # Accesso alle risorse
-    result=response_dict['result']
-
-    # Numero di risorse
-    num_resources = result['num_resources']
-
-    # Nome e url dei files
-    resources=result['resources']
-
-    # Download files
-    for i in range(0,num_resources):
-        file=resources[i]
-
-        # Preparazione richiesta del singolo file per il download
-        file_name = file['name']
-        request = urllib2.Request(file['url'])
-        base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
-        request.add_header("Authorization", "Basic %s" % base64string)
-
-        try:
-            r = urllib2.urlopen(request)
-        except Exception, e:
-            print(e.message)
-            exit(1)
-
-        # Download del file
-        CHUNK = 16 * 1024
-        try:
-            f = open(os.path.join(directory, file_name), 'wb')
-            is_downloaded = True
-        except IOError, e:
-            print(e.message)
-            exit(1)
-        else:
-            with  f:
-                while True:
-                    try:
-                        chunk = r.read(CHUNK)
-                    except Exception, e:
-                        is_downloaded = False
-                        print(e.message)
-                        break
-                    if not chunk:
-                        break
-                    f.write(chunk)
-
-        if (is_downloaded):
-            print('Download del file '+ file_name + ' '+ 'terminato.')
-        else:
-            print('Download del file ' + file_name + ' ' + 'fallito.')
-
-
-# Esempio d'uso
-get_ckan_files('qa-centrosud', 'D:\sistemi_informativi')
-
+sys.exit(0)
