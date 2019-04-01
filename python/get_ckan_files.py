@@ -30,8 +30,8 @@ parser = argparse.ArgumentParser(description='Download from CKAN')
 parser.add_argument('simulation', help='simulation', choices=['meteo', 'qa'])
 parser.add_argument('domain', help='domain', choices=['centrosud', 'nord'])
 parser.add_argument('type', help='type', choices=['latest', 'older'])
-parser.add_argument('--locdir', default='./',          nargs=1, help='local download directory (default:./)')
-parser.add_argument('--json',   default='./ckan.json', nargs=1, help='JSON with host, username, password (default:./ckan.json)')
+parser.add_argument('--locdir', default='./',          help='local download directory (default:./)')
+parser.add_argument('--json',   default='./ckan.json', help='JSON with host, username, password (default:./ckan.json)')
 args = parser.parse_args()
 
 # legge credenziali dal JSON
@@ -55,7 +55,7 @@ request.add_header("Authorization", "Basic %s" % base64string)
 
 try:
     response = urllib2.urlopen(request)
-except Exception, e:
+except Exception as e:
     logging.error(e.message)
     sys.exit(1)
 
@@ -79,7 +79,7 @@ for i in range(0,num_resources):
     request.add_header("Authorization", "Basic %s" % base64string)
     try:
         r = urllib2.urlopen(request)
-    except Exception, e:
+    except Exception as e:
         logging.error(e.message)
         sys.exit(2)
 
@@ -91,7 +91,7 @@ for i in range(0,num_resources):
         wget_dest = ' --output-document=' + local_file
         os.system('wget ' + wget_opts + wget_orig + wget_dest)
         is_downloaded = True
-    except Exception, e:
+    except Exception as e:
         is_downloaded = False
         logging.warning(e.message)
 
